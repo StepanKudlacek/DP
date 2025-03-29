@@ -51,8 +51,8 @@ def create_matching_task(pairs):
     display(container)
 
 create_matching_task([
-    ("Pes", "Zvíře"),
-    ("Jablko", "Ovoce"),
-    ("Mrkev", "Zelenina"),
-    ("Růže", "Květina")
+    ("POLOŽKA1", "POLOŽKAA"),
+    ("POLOŽKA2", "POLOŽKAB"),
+    ("POLOŽKA3", "POLOŽKAC"),
+    ("POLOŽKA4", "POLOŽKAD")
 ])
