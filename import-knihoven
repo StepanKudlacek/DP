@@ -1,0 +1,15 @@
+import ipywidgets as widgets
+from IPython.display import display, clear_output, HTML, Markdown
+import numpy as np
+import matplotlib.pyplot as plt
+import random
+
+# Pomocná funkce pro vytvoření zpětné vazby
+def show_feedback(is_correct, correct_answer=None):
+    if is_correct:
+        print("✅ Správně!")
+    else:
+        if correct_answer:
+            print(f"❌ Nesprávně. Správná odpověď je: {correct_answer}")
+        else:
+            print("❌ Nesprávně. Zkuste to znovu.")
