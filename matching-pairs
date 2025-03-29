@@ -1,0 +1,58 @@
+def create_matching_task(pairs):
+    # pairs: list of (left, right) tuples
+    left_items = [pair[0] for pair in pairs]
+    right_items = [pair[1] for pair in pairs]
+    shuffled_right = right_items.copy()
+    random.shuffle(shuffled_right)
+
+    dropdowns = {}
+    for left in left_items:
+        dropdowns[left] = widgets.Dropdown(
+            options=[""] + shuffled_right,
+            description=left,
+            style={'description_width': 'initial'},
+            layout=widgets.Layout(width='auto')
+        )
+
+    button = widgets.Button(description="Zkontrolovat spojení")
+    output = widgets.Output()
+
+    def check_answer(b):
+        with output:
+            clear_output()
+            user_matches = {left: dropdowns[left].value for left in dropdowns}
+
+            selected_values = list(user_matches.values())
+            if "" in selected_values:
+                print("⚠️ Vyplň všechna pole.")
+                return
+            if len(set(selected_values)) < len(selected_values):
+                print("⚠️ Některé odpovědi jsou vybrány vícekrát. Každou použij jen jednou.")
+                return
+
+            is_correct = all(user_matches[left] == correct for left, correct in pairs)
+            
+            # Použití vaší existující funkce show_feedback
+            if is_correct:
+                show_feedback(True)
+            else:
+                correct_answer_str = "\n".join([f"{left} → {right}" for left, right in pairs])
+                show_feedback(False, correct_answer=correct_answer_str)
+
+    button.on_click(check_answer)
+    
+    container = widgets.VBox([
+        widgets.HTML("<h3>Přiřaď správné dvojice:</h3>"),
+        *[dropdowns[left] for left in left_items],
+        button,
+        output
+    ])
+    
+    display(container)
+
+create_matching_task([
+    ("Pes", "Zvíře"),
+    ("Jablko", "Ovoce"),
+    ("Mrkev", "Zelenina"),
+    ("Růže", "Květina")
+])
