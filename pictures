@@ -1,0 +1,37 @@
+from IPython.display import Image, HTML, display, clear_output
+import ipywidgets as widgets
+
+def create_image_question(question_text, image_url, options, correct_option):
+    dropdown = widgets.Dropdown(
+        options=options,
+        description='',
+        disabled=False,
+        layout=widgets.Layout(width='300px')
+    )
+
+    button = widgets.Button(
+        description="Zkontrolovat",
+        layout=widgets.Layout(width='150px')
+    )
+
+    output = widgets.Output()
+
+    def check_answer(b):
+        with output:
+            clear_output()
+            is_correct = dropdown.value == correct_option
+            show_feedback(is_correct, correct_option)
+
+    button.on_click(check_answer)
+
+    display(HTML(f"<b>{question_text}</b>"))
+    display(Image(image_url, width=400))
+    display(dropdown)
+    display(button)
+    display(output)
+create_image_question(
+    "OTÁZKA", "URL CESTA OBRÁZKU",
+    ["POLOŽKA1", "POLOŽKA2", "POLOŽKA3", "POLOŽKA4"],
+    "SPRÁVNÁ ODPOVĚĎ"
+)
+print("\n")
