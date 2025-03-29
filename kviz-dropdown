@@ -1,0 +1,36 @@
+def create_quiz_question(question_text, options, correct_option):
+    dropdown = widgets.Dropdown(
+        options=options,
+        description='Odpověď:',
+        disabled=False,
+    )
+    
+    button = widgets.Button(description="Zkontrolovat")
+    output = widgets.Output()
+    
+    def check_answer(b):
+        with output:
+            clear_output()
+            is_correct = dropdown.value == correct_option
+            show_feedback(is_correct, correct_option)
+    
+    button.on_click(check_answer)
+    
+    print(question_text)
+    display(dropdown)
+    display(button)
+    display(output)
+
+create_quiz_question(
+    "(ČÍSLO OTÁZKY)SEM NAPSAT OTÁZKU",
+    ["PRVNÍ MOŽNOST ODPOVĚDI", "DRUHÁ MOŽNOST ODPOVĚDI", "TŘETÍ MOŽNOST ODPOVĚDI"],
+    "SPRÁVNÁ ODPOVĚĎ"
+)
+# Vložení prázdného řádku mezi otázky
+print("\n")
+
+create_quiz_question(
+    "(ČÍSLO OTÁZKY)SEM NAPSAT OTÁZKU",
+    ["PRVNÍ MOŽNOST ODPOVĚDI", "DRUHÁ MOŽNOST ODPOVĚDI", "TŘETÍ MOŽNOST ODPOVĚDI"],
+    "SPRÁVNÁ ODPOVĚĎ"
+)
