@@ -1,0 +1,89 @@
+# Vstup pro název grafu
+title_input = widgets.Text(
+    value="Můj graf",
+    description="Název grafu:"
+)
+
+# Vstupy pro hodnoty a popisky
+labels_input = widgets.Text(
+    value="POPIS1, POPIS2, POPIS3",
+    description="Hodnoty (X):",
+    placeholder="Odděl čárkami"
+)
+
+values_input = widgets.Text(
+    value="10, 15, 7",
+    description="Hodnoty (Y):",
+    placeholder="Odděl čárkami"
+)
+
+# Vstupy pro popisky os
+xlabel_input = widgets.Text(
+    value="Kategorie",
+    description="Název (X):"
+)
+
+ylabel_input = widgets.Text(
+    value="Hodnota",
+    description="Název (Y):"
+)
+
+# Výběr typu grafu
+chart_type = widgets.Dropdown(
+    options=["Sloupcový", "Koláčový", "Spojnicový"],
+    value="Sloupcový",
+    description="Typ grafu:"
+)
+
+# Tlačítko pro vykreslení
+button = widgets.Button(description="Vykresli graf")
+output = widgets.Output()
+
+# Funkce pro vykreslení
+def draw_chart(b):
+    with output:
+        clear_output()
+        try:
+            labels = [label.strip() for label in labels_input.value.split(",")]
+            values = [float(v.strip()) for v in values_input.value.split(",")]
+            title = title_input.value.strip()
+            xlabel = xlabel_input.value.strip()
+            ylabel = ylabel_input.value.strip()
+
+            if len(labels) != len(values):
+                print("❌ Počet popisků a hodnot musí být stejný.")
+                return
+
+            plt.figure(figsize=(6,4))
+
+            if chart_type.value == "Sloupcový":
+                plt.bar(labels, values)
+            elif chart_type.value == "Koláčový":
+                plt.pie(values, labels=labels, autopct="%1.1f%%")
+            elif chart_type.value == "Spojnicový":
+                plt.plot(labels, values, marker="o")
+
+            plt.title(title)
+            if chart_type.value != "Koláčový":
+                plt.xlabel(xlabel)
+                plt.ylabel(ylabel)
+
+            plt.tight_layout()
+            plt.show()
+
+        except Exception as e:
+            print(f"Chyba: {e}")
+
+# Spojení tlačítka s funkcí
+button.on_click(draw_chart)
+
+# Zobrazení komponent
+display(
+    title_input,
+    labels_input,
+    values_input,
+    xlabel_input,
+    ylabel_input,
+    chart_type,
+    button,
+    output)
