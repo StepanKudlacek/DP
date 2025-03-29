@@ -1,0 +1,28 @@
+def create_fill_in_question(text_before, text_after, correct_answer):
+    text_input = widgets.Text(
+        placeholder='Doplňte...',
+    )
+
+    button = widgets.Button(description="Zkontrolovat")
+    output = widgets.Output()
+
+    def check_answer(b):
+        with output:
+            clear_output()
+            is_correct = text_input.value.strip().lower() == correct_answer.lower()
+            show_feedback(is_correct, correct_answer)
+
+    button.on_click(check_answer)
+
+    print(f"{text_before} _______________ {text_after}")
+    display(text_input)
+    display(button)
+    display(output)
+
+# Ukázková otázka
+create_fill_in_question(
+    "TEXT PŘED DOPLNĚNÍM",
+    "TEXT ZA DOPLNĚNÍM",
+    "CO MÁ BÝT DOPLNĚNO"
+)
+print("\n")
