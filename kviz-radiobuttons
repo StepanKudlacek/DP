@@ -1,0 +1,30 @@
+def create_quiz_question(question_text, options, correct_option):
+    radiobuttons = widgets.RadioButtons(
+        options=options,
+        description='',
+        disabled=False
+    )
+    
+    button = widgets.Button(description="Zkontrolovat")
+    output = widgets.Output()
+    
+    def check_answer(b):
+        with output:
+            clear_output()
+            is_correct = radiobuttons.value == correct_option
+            show_feedback(is_correct, correct_option)
+    
+    button.on_click(check_answer)
+    
+    print(question_text)
+    display(radiobuttons)
+    display(button)
+    display(output)
+
+# Ukázková otázka
+create_quiz_question(
+    "1. Jak se nazývá programová část počítače?",
+    ["Hardware", "Software", "Mainware", "Zdroj"],
+    "Software"
+)
+print("\n")
