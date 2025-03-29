@@ -1,0 +1,63 @@
+def create_text_answer_question(question_number, question_text, hint_text, correct_answer):
+    """
+    Vytvoří otázku s textovým polem pro odpověď
+    
+    Args:
+        question_number: Číslo otázky
+        question_text: Text otázky
+        hint_text: Nápověda v textovém poli
+        correct_answer: Správná odpověď (nebo seznam správných odpovědí)
+    """
+    # Vytvoření textového pole pro odpověď
+    text_input = widgets.Text(
+        placeholder=hint_text,
+        description='',
+        layout=widgets.Layout(width='300px')
+    )
+    
+    # Vytvoření tlačítka pro ověření odpovědi
+    button = widgets.Button(
+        description="Ověřit odpověď",
+        button_style='info',
+        layout=widgets.Layout(width='150px')
+    )
+    
+    output = widgets.Output()
+    
+    # Funkce pro kontrolu odpovědi
+    def check_answer(b):
+        with output:
+            clear_output()
+            user_answer = text_input.value.strip().lower()
+            
+            if isinstance(correct_answer, list):
+                is_correct = user_answer in [ans.lower() for ans in correct_answer]
+                correct_display = " nebo ".join(correct_answer)
+            else:
+                is_correct = user_answer == correct_answer.lower()
+                correct_display = correct_answer
+            
+            # ✅ Používá tvoji vlastní funkci
+            show_feedback(is_correct, correct_answer=correct_display if not is_correct else None)
+    
+    button.on_click(check_answer)
+    
+    display(HTML(f"<b>Otázka {question_number}:</b> {question_text}"))
+    display(text_input)
+    display(button)
+    display(output)
+    print("\n")
+
+create_text_answer_question(
+    1,
+    "OTÁZKA",
+    "TEXT V BUŇCE",
+    "ODPOVĚĎ – POKUD JE JEN JEDNA"
+)
+
+create_text_answer_question(
+    2,
+    "OTÁZKA",
+    "TEXT V BUŇCE",
+    ["ODPOVĚĎ1", "ODPOVĚĎ2"]
+)
