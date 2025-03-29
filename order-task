@@ -1,0 +1,50 @@
+def create_ordering_task(steps, correct_order=None):
+    if correct_order is None:
+        correct_order = steps.copy()
+
+    shuffled_steps = steps.copy()
+    random.shuffle(shuffled_steps)
+
+    dropdowns = {}
+    for step in shuffled_steps:
+        dropdowns[step] = widgets.Dropdown(
+            options=[(str(i+1), i+1) for i in range(len(steps))],
+            description=step,
+            style={'description_width': 'initial'},
+            layout=widgets.Layout(width='auto')
+        )
+
+    button = widgets.Button(description="Zkontrolovat pořadí")
+    output = widgets.Output()
+
+    def check_answer(b):
+        with output:
+            clear_output()
+            user_order = {step: dropdowns[step].value for step in dropdowns}
+            is_correct = all(user_order[step] == i+1 for i, step in enumerate(correct_order))
+
+            if is_correct:
+                show_feedback(True)
+            else:
+                show_feedback(False)
+                print("\nSprávné pořadí je:")
+                for i, step in enumerate(correct_order):
+                    print(f"{i+1}. {step}")
+
+    button.on_click(check_answer)
+
+    print("Seřaďte následující kroky ve správném pořadí:")
+    for step in shuffled_steps:
+        display(dropdowns[step])
+    display(button)
+    display(output)
+create_ordering_task(
+    steps=[
+        "PRVNÍ KROK",
+        "DRUHÝ KROK",
+        "TŘETÍ KROK",
+        "ČTVRTÝ KROK",
+        "PÁTÝ KROK"
+    ]
+)
+
